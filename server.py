@@ -3,23 +3,31 @@ from pydantic import BaseModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import os
-from dotenv import load_dotenv
 
 app = FastAPI()
-load_dotenv()
 
-#  تحميل النموذج والتوكنيزر
+# Download token from Secret Filetry:
+    with open('/etc/secrets/hugging_face_token', 'r') as f:
+        HUGGING_FACE_TOKEN = f.read().strip()
+except FileNotFoundError:
+    HUGGING_FACE_TOKEN = os.getenv("HUGGING_FACE_TOKEN", "")
+
+# Download the form and tokenizer
 model_name = "ibrahimlasfar/elasfar-AI"
-tokenizer = AutoTokenizer.from_pretrained(model_name, token=os.getenv("HUGGING_FACE_TOKEN"))
-model = AutoModelForCausalLM.from_pretrained(model_name, token=os.getenv("HUGGING_FACE_TOKEN"))
+tokenizer = AutoTokenizer.from_pretrained(model_name, token=HUGGING_FACE_TOKEN)
+model = AutoModelForCausalLM.from_pretrained(model_name, token=HUGGING_FACE_TOKEN)
 
 class Query(BaseModel):
     question: str
 
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
+
 @app.post("/api/ask")
 async def ask_question(query: Query):
     try:
-        # إنشاء السياق
+#Create context
         context = f"""
         Website: Ibrahim Al-Asfar's personal portfolio.
         Description: A full-stack web developer portfolio showcasing projects, skills, and contact information.
