@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 app = FastAPI()
 load_dotenv()
 
-# تحميل النموذج والتوكنيزر
+#  تحميل النموذج والتوكنيزر
 model_name = "ibrahimlasfar/elasfar-AI"
 tokenizer = AutoTokenizer.from_pretrained(model_name, token=os.getenv("HUGGING_FACE_TOKEN"))
 model = AutoModelForCausalLM.from_pretrained(model_name, token=os.getenv("HUGGING_FACE_TOKEN"))
