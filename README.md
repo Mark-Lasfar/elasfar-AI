@@ -28,7 +28,11 @@ The `elasfar-AI` model is a fine-tuned language model based on Hugging Face Tran
 ## Setup
 1. Install dependencies: `pip install transformers datasets torch huggingface_hub`
 2. Train the model: `python train.py`
-3. Deploy the backend: `node server.js`
+. Install dependencies: `pip install -r requirements.txt`
+. Set environment variables in `.env`
+. Run the server: `uvicorn server:app --host 0.0.0.0 --port 8000`
+3. 
+4. Deploy the backend: `node server.js`
 
 ## Training Data
 
@@ -38,6 +42,9 @@ The model is fine-tuned on a custom dataset `training_data.csv` containing quest
 - Skills and professional experience
 
 The dataset is handcrafted to ensure relevant and precise answers.
+
+## Deployment
+Deploy on Render using `requirements.txt` and the command: `uvicorn server:app --host 0.0.0.0 --port $PORT`
 
 ## How to Use (via Hugging Face API)
 
