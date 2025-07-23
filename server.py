@@ -6,11 +6,8 @@ import os
 
 app = FastAPI()
 
-# Download token from Secret Filetry:
-    with open('/etc/secrets/hugging_face_token', 'r') as f:
-        HUGGING_FACE_TOKEN = f.read().strip()
-except FileNotFoundError:
-    HUGGING_FACE_TOKEN = os.getenv("HUGGING_FACE_TOKEN", "")
+# Read token from Environment Variable
+HUGGING_FACE_TOKEN = os.getenv("HUGGING_FACE_TOKEN", "")
 
 # Download the form and tokenizer
 model_name = "ibrahimlasfar/elasfar-AI"
