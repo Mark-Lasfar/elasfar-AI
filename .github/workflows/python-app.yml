@@ -1,4 +1,4 @@
-name: Python Package and Model Training
+name: Python CI and Model Training
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ "main" ]
   schedule:
-    - cron: '0 0 * * 0' # يشتغل كل أحد الساعة 12 صباحًا
+    - cron: '0 0 * * 0' 
 
 jobs:
   lint:
@@ -24,9 +24,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
-        # Stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # Treat all errors as warnings for style checks
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
   train:
@@ -47,7 +45,7 @@ jobs:
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
       run: |
         curl -H "Authorization: Bearer $(echo $JWT_SECRET | jwt encode --secret=$JWT_SECRET)" \
-        https://your-app-name.vercel.app/api/conversations/export > training_data.csv
+        https://portfolio-backend-beta-two.vercel.app/api/conversations/export > training_data.csv
     - name: Train model
       env:
         HUGGING_FACE_TOKEN: ${{ secrets.HUGGING_FACE_TOKEN }}

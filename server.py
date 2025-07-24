@@ -27,7 +27,8 @@ async def health_check():
 @app.post("/api/ask")
 async def ask_question(query: Query):
     try:
-        # إنشاء السياق
+        if not query.question:
+            raise HTTPException(status_code=400, detail="Question is required")
         context = f"""
         Website: Ibrahim Al-Asfar's personal portfolio.
         Description: A full-stack web developer portfolio showcasing projects, skills, and contact information.
@@ -43,9 +44,12 @@ async def ask_question(query: Query):
 @app.post("/api/converse")
 async def converse(conversation: Conversation):
     try:
-        # بناء سلسلة المحادثة
+        if not conversation.messages:
+            raise HTTPException(status_code=400, detail="Messages are required")
         conversation_text = ""
         for msg in conversation.messages:
+            if "role" not in msg or "content" not in msg:
+                raise HTTPException(status_code=400, detail="Each message must have role and content")
             role = "User" if msg["role"] == "user" else "Assistant"
             conversation_text += f"{role}: {msg['content']}\n"
         context = f"""
@@ -57,12 +61,10 @@ async def converse(conversation: Conversation):
         inputs = tokenizer(context, return_tensors="pt", truncation=True, max_length=512)
         outputs = model.generate(**inputs, max_length=150, num_return_sequences=1, temperature=0.7)
         response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        # إزالة السياق من الرد لإرجاع إجابة الـ Assistant فقط
         response = response.replace(context, "").strip()
         return {"response": response}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing conversation: {str(e)}")
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("PORT", 8000)))
