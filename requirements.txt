@@ -4,3 +4,4 @@ transformers==4.44.2
 torch==2.4.1
 python-dotenv==1.0.1
 pydantic==2.9.2
+huggingface_hub==0.23.4

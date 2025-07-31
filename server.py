@@ -6,7 +6,7 @@ import os
 
 app = FastAPI()
 
-# قراءة التوكن من Environment Variable
+#  Environment Variable
 HUGGING_FACE_TOKEN = os.getenv("HUGGING_FACE_TOKEN", "")
 
 # تحميل النموذج والتوكنيزر
@@ -18,7 +18,7 @@ class Query(BaseModel):
     question: str
 
 class Conversation(BaseModel):
-    messages: list[dict]  # قائمة من الرسائل، كل رسالة فيها {'role': 'user'|'assistant', 'content': str}
+    messages: list[dict]  #  {'role': 'user'|'assistant', 'content': str}
 
 @app.get("/health")
 async def health_check():
