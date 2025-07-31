@@ -5,3 +5,6 @@ torch==2.4.1
 python-dotenv==1.0.1
 pydantic==2.9.2
 huggingface_hub==0.23.4
+pandas==2.2.2
+datasets==2.20.0
+pyjwt==2.9.0
