@@ -36,6 +36,8 @@ jobs:
       with:
         python-version: "3.10"
     - name: Install dependencies
+     –
+
       run: |
         python -m pip install --upgrade pip
         pip install transformers==4.44.2 torch==2.4.1 datasets==2.20.0 pandas==2.2.2 huggingface_hub==0.23.4
@@ -55,4 +57,6 @@ jobs:
       env:
         HUGGING_FACE_TOKEN: ${{ secrets.HUGGING_FACE_TOKEN }}
       run: |
-        python -c "from huggingface_hub import login, HfApi; login('$HUGGING_FACE_TOKEN'); api = HfApi(); api.upload_folder(folder_path='./elasfar-AI', repo_id='ibrahimlasfar/elasfar-AI', repo_type='model')"
+        pip install huggingface_hub
+        echo $HUGGING_FACE_TOKEN | huggingface-cli login
+        huggingface-cli upload ibrahimlasfar/elasfar-AI ./elasfar-AI --repo-type model
